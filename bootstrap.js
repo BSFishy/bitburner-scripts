@@ -39,9 +39,9 @@ async function run(ns, script) {
     const threads = Math.floor((maxServerRam - usedServerRam) / scriptRam);
 
     if (threads > 0) {
-        ns.exec(script, host, threads);
+        ns.exec(script, host, threads, target);
 
-        while (ns.isRunning(script, host)) {
+        while (ns.isRunning(script, host, target)) {
             await ns.sleep(sleepTime);
         }
     }

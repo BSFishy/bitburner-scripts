@@ -6,12 +6,11 @@ export async function main(ns) {
     ns.tprint('Catalyzing');
     
     const servers = getServerNames(ns)
-        .filter(target => target !== 'home');
+        .filter(target => target !== 'home')
+        .filter(target => ns.hasRootAccess(target));
 
     for (const target of servers) {
-        if (ns.hasRootAccess(target)) {
-            await catalyze(ns, target);
-        }
+        await catalyze(ns, target);
     }
 
     ns.tprint('Catalyzed ' + servers.join(', '));
@@ -27,6 +26,4 @@ async function catalyze(ns, target) {
     await ns.scp(['bootstrap.js', weakenScript, growScript, hackScript], 'home', target);
 
     ns.exec('bootstrap.js', target);
-
-    ns.toast('Started on ' + target);
 }
